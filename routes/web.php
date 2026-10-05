@@ -15,9 +15,12 @@ Route::middleware('auth')->group(function(){
         ->name('user.index');
 });
 
-Route::middleware(['auth', AuthAdmin::class])->group(function(){
-    Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.index');
-    Route::get('/admin-dashboard/brands', [AdminController::class, 'brands'])->name('admin.brands.index');
+Route::middleware(['auth', AuthAdmin::class])->prefix('/admin-dashboard')
+    ->controller(AdminController::class)->name('admin.')->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::get('/brand', 'brands')->name('brands.index');
+        Route::get('/brand/new', 'add_brand')->name('brands.create');
+        Route::post('/brand/new', 'storeBrand')->name('brands.store');
 });
 
 
