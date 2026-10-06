@@ -11,7 +11,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware('auth')->group(function(){
     // TestQWERTY123 => Password for Eben - eben@gmail.com
-    Route::get('/account-dashboard', [UserController::class, 'index'])
+    Route::get('/account', [UserController::class, 'index'])
         ->name('user.index');
 });
 
@@ -21,6 +21,9 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('/admin-dashboard')
         Route::get('/brand', 'brands')->name('brands.index');
         Route::get('/brand/new', 'add_brand')->name('brands.create');
         Route::post('/brand/new', 'storeBrand')->name('brands.store');
+        Route::get('/brand/edit/{brand}', 'add_edit')->name('brand.edit');
+        Route::post('/brand/edit/{brand}', 'updateBrand')->name('brand.update');
+        Route::post('/brand/delete/{brand}', 'delete')->name('brand.delete');
 });
 
 

@@ -26,7 +26,7 @@
           <form class="form-search">
             <fieldset class="name">
               <input type="text" placeholder="Search here..." class="" name="name"
-                tabindex="2" value="{{ $brand->name }}" aria-required="true" required="">
+                tabindex="2" value="" aria-required="true" required>
             </fieldset>
             <div class="button-submit">
               <button class="" type="submit"><i class="icon-search"></i></button>
@@ -62,19 +62,21 @@
                       <img src="{{ asset('uploads/brands/') }}/{{ $brand->image }}" alt="{{ $brand->name }}" class="image">
                     </div>
                     <div class="name">
-                      <a href="#" class="body-title-2">{{ $brand->name }}</a>
+                      <a href="{{ route('admin.brand.edit', ['brand' => $brand]) }}" class="body-title-2">{{ $brand->name }}</a>
                     </div>
                   </td>
                   <td>{{ $brand->slug }}</td>
                   <td><a href="#" target="_blank">1</a></td>
                   <td>
                     <div class="list-icon-function">
-                      <a href="#">
+                      <a href="{{ route('admin.brand.edit', ['brand' => $brand]) }}">
                         <div class="item edit">
                           <i class="icon-edit-3"></i>
                         </div>
                       </a>
-                      <form action="#" method="POST">
+                      <form action="{{ route('admin.brand.delete', ['brand' => $brand]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
                         <div class="item text-danger delete">
                           <i class="icon-trash-2"></i>
                         </div>
@@ -88,10 +90,34 @@
         </div>
         <div class="divider"></div>
         <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-          {{ $brand->links() }}
+          {{ $brands->links() }}
         </div>
       </div>
     </div>
   </div>
 </div>
 @endsection
+
+@push('script')
+  <script>
+    $(function(){
+      $('.delete').on('click', function(e){
+        e.preventDefault();
+        const form = $(this).closest('form');
+        swal({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this brand!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+          confirmButtonText: "Yes, delete it!",
+          confirmButtonColot : "#d33",
+        }).then((willDelete) => {
+          if (willDelete) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+@endpush

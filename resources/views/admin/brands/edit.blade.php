@@ -1,4 +1,4 @@
-@extends('admin.admin');
+@extends('admin.admin')
 @section('content')
 <div class="main-content-inner">
   <div class="main-content-wrap">
@@ -22,34 +22,36 @@
           <i class="icon-chevron-right"></i>
         </li>
         <li>
-          <div class="text-tiny">New Brand</div>
+          <div class="text-tiny">Edit Brand</div>
         </li>
       </ul>
     </div>
     <!-- new-category -->
     <div class="wg-box">
-      <form class="form-new-product form-style-1" action="{{ route('admin.brands.store') }}" method="POST"
+      <form class="form-new-product form-style-1" action="{{ route('admin.brand.update', ['brand' => $brand]) }}" method="POST"
         enctype="multipart/form-data">
         @csrf
         <fieldset class="name">
           <div class="body-title">Brand Name <span class="tf-color-1">*</span></div>
           <input class="flex-grow" type="text" placeholder="Brand name" name="name"
-            tabindex="0" value="{{ old('name') }}" aria-required="true" required>
+            tabindex="0" value="{{ old('name', $brand->name) }}" aria-required="true" required>
         </fieldset>
         @error('name') <span class="alert alert-danger text-center">{{ $message }}</span> @enderror
         <fieldset class="name">
           <div class="body-title">Brand Slug <span class="tf-color-1">*</span></div>
           <input class="flex-grow" type="text" placeholder="Brand Slug" name="slug"
-            tabindex="0" value="{{ old('slug') }}" aria-required="true" required>
+            tabindex="0" value="{{ old('slug', $brand->slug) }}" aria-required="true" required>
         </fieldset>
         @error('slug') <span class="alert alert-danger text-center">{{ $message }}</span> @enderror
         <fieldset>
           <div class="body-title">Upload images <span class="tf-color-1">*</span>
           </div>
           <div class="upload-image flex-grow">
+            @if ($brand->image)
             <div class="item" id="imgpreview" style="display:none">
-              <img src="upload-1.html" class="effect8" alt="">
+              <img src="{{ asset('uploads/brands') }}/{{ $brand->image }}" class="effect8" alt="">
             </div>
+            @endif
             <div id="upload-file" class="item up-load">
               <label class="uploadfile" for="myFile">
                 <span class="icon">
@@ -73,34 +75,3 @@
   </div>
 </div>
 @endsection
-@push('script')
-  <script>
-    $(function(){
-      let previewUrl = null;
-      $('#myFile').on('change', function () {
-        const [file] = this.files;
-        if (!file) return;
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
-        previewUrl = URL.createObjectURL(file);
-        $('#imgpreview img').attr('src', previewUrl);
-        $('#imgpreview').show();
-      });
-
-      $("input[name='name']").on('change', function(e){
-        $("input[name='slug']").val(stringToSlug($(this).val()));
-      });
-    });
-
-    /**
-     * @param {string} text 
-     * */
-    function stringToSlug(text){
-      return text.toLowerCase()
-        .replace(/\s+/g, '-')           // Replace spaces with -
-        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-        .replace(/^-+/, '')             // Trim - from start of text
-        .replace(/-+$/, '');            // Trim - from end of text
-    }
-  </script>
-@endpush
