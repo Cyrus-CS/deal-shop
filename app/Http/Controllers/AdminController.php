@@ -15,6 +15,8 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class AdminController extends Controller
 {
+
+    // ---------------------------------  BRAND -------------------------
     public function index() : View{
         return view('admin.index');
     }
@@ -25,7 +27,8 @@ class AdminController extends Controller
     }
 
     public function add_brand() : View{
-        return view('admin.brands.create');
+        $brand = new Brand();
+        return view('admin.brands.create', compact('brand'));
     }
 
     public function add_edit(Brand $brand) : View{
@@ -38,6 +41,7 @@ class AdminController extends Controller
         $validated = $request->validated();
         $brand = Brand::create(Collection::make($validated)->except('image')->toArray());
         $brand->image = $request->file('image')->hashName();
+
         $this->GenerateBrandThumbailsImage($request->file('image'), $brand->image, $request);
         $brand->save();
         return redirect()->route('admin.brands.index')->with('success', "the " . $brand->name . " brand has been successfully created");
@@ -46,6 +50,7 @@ class AdminController extends Controller
         $validated = $request->validated();
         $brand->update(Collection::make($validated)->except('image')->toArray());
         $brand->image = $request->file('image')->hashName();
+
         $this->GenerateBrandThumbailsImage($request->file('image'), $brand->image, $request);
         $brand->save();
         return redirect()->route('admin.brands.index')->with('success', "the " . $brand->name . " brand has been successfully updated");

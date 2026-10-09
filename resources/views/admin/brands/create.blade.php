@@ -48,7 +48,7 @@
           </div>
           <div class="upload-image flex-grow">
             <div class="item" id="imgpreview" style="display:none">
-              <img src="upload-1.html" class="effect8" alt="">
+              <img src="{{ asset('uploads/brands/'. $brand->image) }}" class="effect8" alt="">
             </div>
             <div id="upload-file" class="item up-load">
               <label class="uploadfile" for="myFile">

@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @mixin IdeHelperBrand
- */
-class Brand extends Model
+class Category extends Model
 {
     protected $fillable = [
         'name',
         'slug',
-        'image',
-    ];
+        'image'
+    ]; 
 
     public function products() : HasMany {
         return $this->hasMany(Product::class);

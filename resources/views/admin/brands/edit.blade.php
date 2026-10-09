@@ -48,8 +48,8 @@
           </div>
           <div class="upload-image flex-grow">
             @if ($brand->image)
-            <div class="item" id="imgpreview" style="display:none">
-              <img src="{{ asset('uploads/brands') }}/{{ $brand->image }}" class="effect8" alt="">
+            <div class="item" id="imgpreview">
+              <img src="{{ asset('uploads/brands/' . $brand->image) }}" class="effect8" alt="">
             </div>
             @endif
             <div id="upload-file" class="item up-load">
@@ -75,3 +75,34 @@
   </div>
 </div>
 @endsection
+@push('script')
+  <script>
+    $(function(){
+      let previewUrl = null;
+      $('#myFile').on('change', function () {
+        const [file] = this.files;
+        if (!file) return;
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = URL.createObjectURL(file);
+        $('#imgpreview img').attr('src', previewUrl);
+        $('#imgpreview').show();
+      });
+
+      $("input[name='name']").on('change', function(e){
+        $("input[name='slug']").val(stringToSlug($(this).val()));
+      });
+    });
+
+    /**
+     * @param {string} text 
+     * */
+    function stringToSlug(text){
+      return text.toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+    }
+  </script>
+@endpush

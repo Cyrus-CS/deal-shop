@@ -1,0 +1,67 @@
+Tu es un développeur front-end Senior et un expert en UI/UX design. Ton objectif est de créer un template complet pour un site web moderne d'apprentissage de cuisine. Le design doit être intuitif, cohérent, très esthétique (style moderne, chaleureux et appétissant) et inclure des animations fluides et pertinentes.
+
+# STACK TECHNIQUE OBLIGATOIRE
+- HTML5 sémantique
+- Tailwind CSS (via CDN : https://cdn.tailwindcss.com)
+- JavaScript natif (ES6+)
+- GSAP (via CDN) pour les animations de scroll, les transitions de page et les éléments interactifs.
+- Anime.js (via CDN) pour les micro-animations (comme le battement de cœur des favoris, l'apparition des cartes, etc.)
+- Polices Google Fonts : "Playfair Display" pour les titres et "Poppins" pour le texte.
+- Icônes : Font Awesome ou Heroicons (via CDN).
+
+# CONTRAINTES TECHNIQUES
+- Génère le tout dans un seul fichier `index.html` (HTML, CSS additionnel dans des balises <style>, et JS dans des balises <script>) pour faciliter le test.
+- Utilise des données fictives (Dummy Data) en JavaScript sous forme de tableau d'objets pour simuler le chargement des recettes et des utilisateurs.
+- Utilise des images depuis Unsplash Source (ex: https://source.unsplash.com/600x400/?food,recipe) ou des placeholders cohérents.
+
+# FONCTIONNALITÉS À IMPLÉMENTER (Front-end uniquement)
+
+1. Authentification (Modales) :
+- Boutons "Connexion" et "Inscription" dans la navbar.
+- Modales élégantes avec animation GSAP (apparition en fondu et léger zoom).
+- Champs de formulaire modernes avec états de focus animés.
+
+2. Fil d'actualité et Filtrage des Recettes :
+- Une section "Grille de recettes" avec des cartes stylisées (image, titre, auteur, pays d'origine, icône favori).
+- Une barre de filtres interactive :
+  - Filtre par pays (ex: Italie, Japon, France, Mexique...).
+  - Onglet "Recettes les plus populaires" (tri par "likes").
+- Animation d'affichage des cartes avec Anime.js (staggered fade-in).
+- Animation fluide lors du filtrage (les cartes disparaissent avec GSAP et les nouvelles réapparaissent).
+
+3. Création de Recette :
+- Un bouton flottant (FAB) ou un bouton dans la navbar "Créer une recette".
+- Ouvre une modale ou une section dédiée avec un formulaire (Nom, Ingrédients, Étapes, Pays, Image URL).
+- À la soumission, la recette est ajoutée dynamiquement en haut de la grille avec une animation de "pop-in".
+
+4. Système de Favoris :
+- Chaque carte de recette possède une icône "cœur".
+- Au clic, l'icône s'anime (effet de battement de cœur avec Anime.js) et change de couleur.
+- Le compteur de "likes" de la recette s'incrémente.
+
+5. Profils Utilisateurs :
+- Au clic sur le nom ou l'avatar de l'auteur d'une recette, ouvre une vue "Profil" (modale ou section qui remplace la grille).
+- Le profil affiche : bannière, avatar, nom, bio courte, et la grille des recettes créées par cet utilisateur.
+
+# DESIGN SYSTÈME (Tailwind)
+- Couleurs principales :
+  - Primaire : Ambre/Orange (ex: amber-500) pour les CTA et accents (rappel de la nourriture).
+  - Secondaire : Vert profond (ex: emerald-800) pour le succès, les herbes.
+  - Fond : Blanc cassé (gray-50) pour le fond, blanc pur pour les cartes.
+  - Texte : gray-800 pour le corps, gray-500 pour les sous-titres.
+- Ombres : Douces et modernes (shadow-lg, shadow-amber-100/50 au survol).
+- Border-radius : Arrondis généreux (rounded-xl, rounded-2xl) pour un côté convivial.
+
+# STRUCTURE DE LA PAGE
+1. Navbar (sticky) : Logo "Cuisin'Art", Liens (Accueil, Recettes, Créer), Boutons Auth.
+2. Hero Section : Titre accrocheur "Maîtrise l'art de la cuisine", sous-titre, bouton CTA "Explorer les recettes", image de fond dynamique. Animation GSAP d'entrée (titre qui slide de la gauche, image de la droite).
+3. Section Filtres & Recettes : Barre de filtres sticky en haut de cette section, grille responsive (1 col mobile, 2 col tablette, 3/4 col desktop).
+4. Footer : Liens utiles, réseaux sociaux, copyright.
+
+# INSTRUCTIONS POUR LE CODE
+- Écris un code propre, commenté et lisible.
+- Assure-toi que le JavaScript gère bien l'état (recettes affichées, favoris, utilisateur actuel simulé) de manière logique.
+- Les animations ne doivent pas bloquer l'interactivité. Garde des performances optimales.
+- Génère l'intégralité du code HTML, CSS et JS dans une seule réponse. Ne coupe pas le code, fais en sorte qu'il soit complet.
+
+Commence par générer le code complet du fichier `index.html`.
