@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\backend\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\StoreProductRequest;
@@ -77,7 +77,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $this->deleteImageFile($product->image);
-            $product->image = $this->storeResized($request->file('image'), $path, 1024, 1024);
+            $product->image = $this->storeResized($request->file('image'), $path, 700, 700);
         }
 
         if ($request->hasFile('images')) {
@@ -85,7 +85,7 @@ class ProductController extends Controller
                 $this->deleteImageFile($old);
             }
             $product->images = collect($request->file('images'))
-                ->map(fn($file) => $this->storeResized($file, $path, 1024, 1024))
+                ->map(fn($file) => $this->storeResized($file, $path, 700, 700))
                 ->all();
         }
 

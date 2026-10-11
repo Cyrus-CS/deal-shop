@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\backend\Category;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
@@ -18,7 +18,7 @@ class CategoryController extends Controller
 {
     // ------------------------------------- CATEGORY -------------------------------
     public function index() : View{
-        $categories = Category::orderByDesc('id')->paginate(10);
+        $categories = Category::with('products')->orderByDesc('id')->paginate(10);
         return view('admin.categories.index', compact('categories'));
     }
 

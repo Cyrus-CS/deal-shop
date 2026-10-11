@@ -31,8 +31,9 @@
     </div>
     <!-- form-add-product -->
     <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data"
-      action="{{ route('admin.product.store') }}">
+      action="{{ route('admin.product.update', ['product' => $product]) }}">
       @csrf
+      @method('PUT')
       <div class="wg-box">
         <fieldset class="name">
           <div class="body-title mb-10">Product name <span class="tf-color-1">*</span>
@@ -61,7 +62,9 @@
               <select class="" name="category_id">
                 <option>Choose Category</option>
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                <option value="{{ $category->id }}" @selected(old('category_id', $product->category_id) == $category->id)>
+                  {{ $category->name }}
+                </option>
                 @endforeach
               </select>
             </div>
@@ -75,7 +78,7 @@
               <select class="" name="brand_id">
                 <option>Choose Brand</option>
                 @foreach ($brands as $brand)
-                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                <option value="{{ $brand->id }}" @selected(old('brand_id', $product->brand_id) == $brand->id)>{{ $brand->name }}</option>
                 @endforeach
               </select>
             </div>
@@ -88,7 +91,7 @@
               class="tf-color-1">*</span></div>
           <textarea class="mb-10 ht-150" name="short_description"
             placeholder="Short Description" tabindex="0" aria-required="true"
-            required="{{ old('short_description', $product->short_description) }}"></textarea>
+            required="">{{ old('short_description', $product->short_description) }}</textarea>
           <div class="text-tiny">Do not exceed 100 characters when entering the
             product name.</div>
         </fieldset>
@@ -98,7 +101,7 @@
           <div class="body-title mb-10">Description <span class="tf-color-1">*</span>
           </div>
           <textarea class="mb-10" name="description" placeholder="Description"
-            tabindex="0" aria-required="true" required="{{ old('description', $product->description) }}"></textarea>
+            tabindex="0" aria-required="true" required="">{{ old('description', $product->description) }}</textarea>
           <div class="text-tiny">Do not exceed 100 characters when entering the
             product name.</div>
         </fieldset>
@@ -109,8 +112,10 @@
           <div class="body-title">Upload images <span class="tf-color-1">*</span>
           </div>
           <div class="upload-image flex-grow">
-            <div class="item" id="imgpreview" style="display:none">
-              <img src="{{ asset('uploads/produts/' .$product->image) }}"
+            
+            <!-- <div id="imgpreview" @class(['item', 'd-none' => ! $product->image])> --> 
+            <div class="item" id="imgpreview" @unless($product->image) style="display:none" @endunless>
+              <img src="{{ $product->image ? asset('uploads/products/' . $product->image) : '' }}"
                 class="effect8" alt="{{ $product->name }}">
             </div>
             <div id="upload-file" class="item up-load">
@@ -130,9 +135,13 @@
         <fieldset>
           <div class="body-title mb-10">Upload Gallery Images</div>
           <div class="upload-image mb-16">
-            <!-- <div class="item">
-                                <img src="images/upload/upload-1.png" alt="">
-                            </div>                                                 -->
+            @if ($product->images)
+            @foreach ($product->all_images as $image)
+            <div class="item">
+              <img src="{{ asset('uploads/products/' . $image) }}" alt="{{ $product->name }}">
+            </div>
+            @endforeach
+            @endif
             <div id="galUpload" class="item up-load">
               <label class="uploadfile" for="gFile">
                 <span class="icon">
@@ -193,8 +202,8 @@
             <div class="body-title mb-10">Stock</div>
             <div class="select mb-10">
               <select class="" name="stock_status">
-                <option value="instock">In Stock</option>
-                <option value="outofstock">Out of Stock</option>
+                <option value="instock" @selected($product->stock_status === 'instock')>In Stock</option>
+                <option value="outofstock" @selected($product->stock_status === 'outofstock')>Out of Stock</option>
               </select>
             </div>
           </fieldset>
@@ -204,8 +213,8 @@
             <div class="body-title mb-10">Featured</div>
             <div class="select mb-10">
               <select class="" name="featured">
-                <option value="0">No</option>
-                <option value="1">Yes</option>
+                <option value="0" @selected(! $product->featured)>No</option>
+                <option value="1" @selected($product->featured)>Yes</option>
               </select>
             </div>
           </fieldset>
@@ -213,7 +222,7 @@
 
         </div>
         <div class="cols gap10">
-          <button class="tf-button w-full" type="submit">Add product</button>
+          <button class="tf-button w-full" type="submit">Save</button>
         </div>
       </div>
     </form>
@@ -239,13 +248,13 @@
 
     let galleryUrls = [];
 
-    $('#gFile').on('change', function () {
+    $('#gFile').on('change', function() {
       // Nettoyage des anciens aperçus
       galleryUrls.forEach(url => URL.revokeObjectURL(url));
       galleryUrls = [];
       $('#galUpload').siblings('.gitems').remove();
 
-      $.each(this.files, function (_, file) {
+      $.each(this.files, function(_, file) {
         const url = URL.createObjectURL(file);
         galleryUrls.push(url);
         $('#galUpload').before(

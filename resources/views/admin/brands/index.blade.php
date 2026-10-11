@@ -66,7 +66,7 @@
                     </div>
                   </td>
                   <td>{{ $brand->slug }}</td>
-                  <td><a href="#" target="_blank">1</a></td>
+                  <td><a href="{{ route('admin.product.index', ['brand' => $brand]) }}" target="_blank">{{ $brand->products->count() }}</a></td>
                   <td>
                     <div class="list-icon-function">
                       <a href="{{ route('admin.brand.edit', ['brand' => $brand]) }}">

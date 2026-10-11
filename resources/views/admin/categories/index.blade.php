@@ -65,7 +65,7 @@
                 </div>
               </td>
               <td>{{ $category->slug }}</td>
-              <td><a href="{{ route('admin.categories.edit', ['category' => $category]) }}" target="_blank">0</a></td>
+              <td><a href="{{ route('admin.product.index', ['category' => $category]) }}" target="_blank">{{  $category->products->count() }}</a></td>
               <td>
                 <div class="list-icon-function">
                   <a href="{{ route('admin.categories.edit', ['category' => $category]) }}">
